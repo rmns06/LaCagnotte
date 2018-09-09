@@ -15,7 +15,7 @@
 
 
  // Initialization Vue
- new Vue({
+ let vm = new Vue({
     el: '#app',
     data: {
         brand: 'Méga Cagnotte',
@@ -51,7 +51,7 @@
             this.player[1].solde -= this.player[1].gain
             this.player[2].solde -= this.player[2].gain
 
-            
+           // Vue.set(vm.player, 0, {name:'Jonathan', solde:this.player[0].solde, gain:0});
             
             this.reset()
         },
@@ -90,9 +90,27 @@
             this.player[1].solde -= this.player[1].gain
             this.reset()
         },
-   
+   // fonction de mise a jours des objets :
+   //Vue.set(vm.player*(nom de la data)*, 1*(index)*, {name:'Jonathan', solde:40, gain:0});
 
-    }
+    },
+
+    watch: {
+        player: {
+          handler() {
+            console.log('player changed!');
+            localStorage.setItem('player', JSON.stringify(this.player));
+            localStorage.setItem('counter', JSON.stringify(this.counter));
+          },
+          deep: true,
+        },
+      },
+
+      mounted() {
+        console.log('App mounted!');
+        if (localStorage.getItem('player')) this.player = JSON.parse(localStorage.getItem('player'));
+        if (localStorage.getItem('counter')) this.counter = JSON.parse(localStorage.getItem('counter'));
+      },
  })
  
 
